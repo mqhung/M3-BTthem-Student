@@ -1,0 +1,68 @@
+create database bt_student;
+use bt_student;
+#tao cac bang
+create table Address(id int auto_increment, name nvarchar(255), primary key (id));
+create table Classes(id int auto_increment, name nvarchar(255), language nvarchar(255), description nvarchar(255), primary key (id));
+create table Students(id int auto_increment, fullName nvarchar(255), address_id int, phone int unique, class_id int, primary key (id));
+create table Course(id int auto_increment, name nvarchar(255),description nvarchar(255), primary key (id));
+create table Point(id int auto_increment, course_id int, student_id int, point int, primary key (id));
+# tao cac rang buoc
+alter table Students add foreign key (address_id) references Address(id);
+alter table Students add foreign key (class_id) references Classes(id);
+alter table Point add foreign key (course_id) references Course(id);
+alter table Point add foreign key (student_id) references Students(id);
+# tao cac ban ghi
+#classes
+insert into Classes(id, name, language, description) VALUES (1,'G1','JAVA','I');
+insert into Classes(id, name, language, description) VALUES (2,'G2','PHP','L');
+insert into Classes(id, name, language, description) VALUES (3,'H1','.NET','U');
+insert into Classes(id, name, language, description) VALUES (4,'H2','C#','M');
+insert into Classes(id, name, language, description) VALUES (5,'I1','C++','W');
+#address
+insert into Address(id, name) VALUES (1,'Ha Noi');
+insert into Address(id, name) VALUES (2,'Sai Gon');
+insert into Address(id, name) VALUES (3,'Da Nang');
+insert into Address(id, name) VALUES (4,'Hue');
+insert into Address(id, name) VALUES (5,'Phu Tho');
+#student
+insert into Students(id, fullName, address_id, phone, class_id) VALUES (1,'Hung',1,111,5);
+insert into Students(id, fullName, address_id, phone, class_id) VALUES (2,'Trung',2,222,4);
+insert into Students(id, fullName, address_id, phone, class_id) VALUES (3,'Thinh',3,333,5);
+insert into Students(id, fullName, address_id, phone, class_id) VALUES (4,'Tung',4,444,3);
+insert into Students(id, fullName, address_id, phone, class_id) VALUES (5,'Toan',5,555,2);
+insert into Students(id, fullName, address_id, phone, class_id) VALUES (6,'Mung',5,666,1);
+insert into Students(id, fullName, address_id, phone, class_id) VALUES (7,'Thanh',4,777,3);
+insert into Students(id, fullName, address_id, phone, class_id) VALUES (8,'Viet',3,888,5);
+insert into Students(id, fullName, address_id, phone, class_id) VALUES (9,'Duyet',2,999,4);
+insert into Students(id, fullName, address_id, phone, class_id) VALUES (10,'Dung',1,101010,3);
+#course
+insert into Course(id, name, description) VALUES (1,'CodegymHN','I');
+insert into Course(id, name, description) VALUES (2,'CodegymSG','L');
+insert into Course(id, name, description) VALUES (3,'CodegymDN','U');
+insert into Course(id, name, description) VALUES (4,'CodegymH','M');
+insert into Course(id, name, description) VALUES (5,'CodegymPT','W');
+#point
+insert into Point(id, course_id, student_id, point) VALUES (1,1,1,5);
+insert into Point(id, course_id, student_id, point) VALUES (2,2,2,10);
+insert into Point(id, course_id, student_id, point) VALUES (3,2,3,25);
+insert into Point(id, course_id, student_id, point) VALUES (4,4,4,55);
+insert into Point(id, course_id, student_id, point) VALUES (5,3,5,53);
+insert into Point(id, course_id, student_id, point) VALUES (6,5,6,25);
+insert into Point(id, course_id, student_id, point) VALUES (7,4,7,45);
+insert into Point(id, course_id, student_id, point) VALUES (8,5,8,35);
+insert into Point(id, course_id, student_id, point) VALUES (9,2,9,12);
+insert into Point(id, course_id, student_id, point) VALUES (10,1,10,23);
+insert into Point(id, course_id, student_id, point) VALUES (11,1,6,38);
+insert into Point(id, course_id, student_id, point) VALUES (12,2,4,40);
+insert into Point(id, course_id, student_id, point) VALUES (13,2,7,39);
+insert into Point(id, course_id, student_id, point) VALUES (14,4,8,24);
+insert into Point(id, course_id, student_id, point) VALUES (15,1,2,16);
+# cac yeu cau de bai
+#thong ke so luong hoc vien cac lop
+select c.name as TenLop,count(name) as SoLuongHV from Students s join Classes c on class_id = c.id group by c.name;
+#thong ke so luong hoc vien tai cac tinh
+select a.name as TenThanhPho,count(name) as SoLuongHV from Students s join Address a on class_id = a.id group by a.name;
+#tinh diem trung binh cua cac khoa hoc
+select c.name as TenKhoaHoc, avg(p.point) as DiemTB from Point p join Course c on course_id =c.id group by c.name;
+#khoa hoc co diem trung binh cao nhat
+select c.name as TenKhoaHoc, avg(p.point) as DiemTBMax from Point p join Course c on course_id =c.id group by c.name having avg(p.point) > 52;
